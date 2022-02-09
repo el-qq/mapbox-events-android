@@ -29,7 +29,7 @@ subprojects {
 
     publishing {
         publications {
-            maven(MavenPublication) {
+            paidRelease(MavenPublication) {
                 groupId project.group
                 artifactId project.name
                 version project.version

@@ -5,6 +5,7 @@ version = VERSION_NAME
 
 android {
     compileSdkVersion androidVersions.compileSdkVersion
+    buildToolsVersion androidVersions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion androidVersions.minSdkVersion
@@ -20,8 +21,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     testOptions {
@@ -49,11 +50,17 @@ dependencies {
     androidTestImplementation dependenciesList.gmsLocation
 }
 
+apply from: 'javadoc.gradle'
+apply from: "${rootDir}/gradle/mvn-push-android.gradle"
+apply from: "${rootDir}/gradle/checkstyle.gradle"
+apply from: "${rootDir}/gradle/download-schema.gradle"
+
+
 afterEvaluate {
     publishing {
         publications {
-            maven(MavenPublication) {
-                groupId "com.github.el-qq"
+            paidRelease(MavenPublication) {
+                groupId GROUP
                 artifactId POM_ARTIFACT_ID
                 version VERSION_NAME
             }

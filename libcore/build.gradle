@@ -38,30 +38,3 @@ apply from: 'javadoc.gradle'
 apply from: "${rootDir}/gradle/mvn-push-android.gradle"
 apply from: "${rootDir}/gradle/checkstyle.gradle"
 
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                groupId GROUP
-                artifactId POM_ARTIFACT_ID
-                version VERSION_NAME
-            }
-            debug(MavenPublication) {
-                groupId GROUP
-                artifactId POM_ARTIFACT_ID
-                version VERSION_NAME
-            }
-            paidRelease(MavenPublication) {
-                groupId GROUP
-                artifactId POM_ARTIFACT_ID
-                version VERSION_NAME
-            }
-            paidDebug(MavenPublication) {
-                groupId GROUP
-                artifactId POM_ARTIFACT_ID
-                version VERSION_NAME
-            }
-        }
-    }
-}

@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation project(':libcore')
+    api project(':libcore')
     api dependenciesList.okhttp3
     implementation dependenciesList.gson
     implementation dependenciesList.supportAppcompatV7

@@ -1,5 +1,6 @@
 package com.mapbox.android.telemetry;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,11 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import okio.Buffer;
 
 public class TelemetryUtils {
+  private static final String TAG = "TelemetryUtils";
   static final String MAPBOX_SHARED_PREFERENCES = "MapboxSharedPreferences";
   static final String MAPBOX_SHARED_PREFERENCE_KEY_VENDOR_ID = "mapboxVendorId";
   private static final String KEY_META_DATA_WAKE_UP = "com.mapbox.AdjustWakeUp";
@@ -137,9 +144,24 @@ public class TelemetryUtils {
     return pluggedIntoUSB || pluggedIntoAC;
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.N)
+  @SuppressLint("MissingPermission")
+  @NonNull
   static String obtainCellularNetworkType(Context context) {
     TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-    return NETWORKS.get(telephonyManager.getNetworkType());
+    int output = TelephonyManager.NETWORK_TYPE_UNKNOWN;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      try {
+        output = telephonyManager.getDataNetworkType();
+      } catch (SecurityException se) {
+        // Developer did not add READ_PHONE_STATE permission to their app
+        // or user did not accept the permission.
+        Log.e(TAG, se.toString());
+      }
+    } else {
+      output = telephonyManager.getNetworkType();
+    }
+    return Objects.requireNonNull(NETWORKS.get(output));
   }
 
   static String obtainCurrentDate() {

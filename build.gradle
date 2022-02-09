@@ -24,18 +24,6 @@ allprojects {
 subprojects {
     apply plugin: 'idea'
     apply from: "${rootDir}/gradle/dependencies.gradle"
-
-    apply plugin: 'maven-publish'
-
-    publishing {
-        publications {
-            paidRelease(MavenPublication) {
-                groupId project.group
-                artifactId project.name
-                version project.version
-            }
-        }
-    }
 }
 
 task clean(type: Delete) {

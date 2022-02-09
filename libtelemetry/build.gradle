@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 version = VERSION_NAME
 
@@ -48,3 +49,14 @@ dependencies {
     androidTestImplementation dependenciesList.gmsLocation
 }
 
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId "com.github.el-qq"
+                artifactId POM_ARTIFACT_ID
+                version VERSION_NAME
+            }
+        }
+    }
+}

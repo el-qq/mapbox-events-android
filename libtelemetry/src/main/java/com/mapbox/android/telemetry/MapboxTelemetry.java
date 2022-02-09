@@ -1,5 +1,6 @@
 package com.mapbox.android.telemetry;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
@@ -248,6 +249,7 @@ public class MapboxTelemetry implements FullQueueCallback, EventCallback, Servic
     }
   }
 
+  @SuppressLint("WrongConstant")
   private void bindTelemetryService() {
     applicationContext.bindService(obtainLocationServiceIntent(), serviceConnection, NO_FLAGS);
   }
